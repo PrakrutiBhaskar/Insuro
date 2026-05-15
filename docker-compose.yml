@@ -1,0 +1,93 @@
+version: "3.9"
+
+# ── InsuReady — Local Development Stack ──────────────────────────────────────
+#
+# Services defined here:
+#   extraction  — Python FastAPI NLP extraction microservice (your service)
+#   postgres    — PostgreSQL 15 primary datastore
+#   redis       — Redis 7 for caching + BullMQ job queue
+#
+# Services to be added by other team members:
+#   api         — Node.js Express API gateway
+#   frontend    — React + Vite dev server
+#
+# Usage:
+#   Start all:        docker compose up
+#   Start one:        docker compose up extraction
+#   Rebuild:          docker compose up --build extraction
+#   Stop all:         docker compose down
+#   Wipe volumes:     docker compose down -v
+
+services:
+
+  # ── Extraction Microservice (NLP) ─────────────────────────────────────────
+  extraction:
+    build:
+      context: ./extraction
+      dockerfile: Dockerfile
+    container_name: insuro_extraction
+    ports:
+      - "8001:8001"           # FastAPI accessible at http://localhost:8001
+    env_file:
+      - ./extraction/.env
+    volumes:
+      - ./extraction:/app     # Live reload during development
+      - huggingface_cache:/root/.cache/huggingface  # Persist model downloads
+    networks:
+      - insuro_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s       # Give model time to load on first start
+
+  # ── PostgreSQL ────────────────────────────────────────────────────────────
+  postgres:
+    image: pgvector/pgvector:pg15   # pg15 + pgvector extension pre-installed
+    container_name: insuro_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: insuro
+      POSTGRES_PASSWORD: insuro_dev_password
+      POSTGRES_DB: insuro_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - insuro_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U insuro -d insuro_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis ─────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: insuro_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - insuro_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# ── Volumes ───────────────────────────────────────────────────────────────────
+volumes:
+  postgres_data:
+  redis_data:
+  huggingface_cache:    # Persists NER model weights across container restarts
+
+# ── Networks ──────────────────────────────────────────────────────────────────
+networks:
+  insuro_net:
+    driver: bridge
