@@ -1,6 +1,4 @@
 # Insuro
-An AI-powered platform that converts health data into explainable insurance recommendations.
-# Insuro
 ### AI-Powered Health Insurance Recommendation Platform
 
 Insuro is a full-stack AI-powered insurance recommendation system that helps users discover personalized health insurance plans using machine learning, NLP-driven medical document analysis, and explainable AI.
