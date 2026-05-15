@@ -1,0 +1,32 @@
+# InsuReady - Development Plan
+
+## Phase 1: Frontend Finalization (Current)
+1. Context Integration: Replace mock states in `Login.tsx`, `Intake.tsx`, etc., with global state management (Zustand or React Context) to manage the health profile data across steps.
+2. Form Validation: Add validation (Zod + React Hook Form) to the Intake stepper to ensure all required health vitals and demographics are collected accurately.
+3. API Client Setup: Create a service layer (`src/api/client.ts`) using Axios or Fetch to communicate with the upcoming backend endpoints.
+4. Routing Enhancements: Add protected routing to ensure users cannot skip straight to recommendations without filling the intake form.
+
+## Phase 2: Backend Foundation (Python / FastAPI)
+1. Setup: Initialize a Python project inside the `backend/` folder using Poetry or Virtualenv.
+2. Framework: Scaffold a FastAPI application (as mentioned in the mock tech stack: FastAPI, XGBoost, pgvector).
+3. Database: Set up PostgreSQL with the `pgvector` extension. Configure SQLAlchemy or SQLModel for ORM.
+4. Authentication: Implement JWT-based auth routes (`/api/auth/login`, `/api/auth/register`) matching the mock login screen.
+
+## Phase 3: Core AI Features Integration
+1. NLP Extraction (Bio_ClinicalBERT): Create an endpoint (`/api/upload`) to accept medical PDFs/images, run OCR/text extraction, and use a HuggingFace Bio_ClinicalBERT pipeline to return structured JSON.
+2. Risk Classification (XGBoost): 
+   - Define the 18-feature input schema.
+   - Load the pre-trained XGBoost model.
+   - Create a `/api/inference` endpoint that calculates the risk score based on the extracted features and intake form data.
+3. Explainability (SHAP): Integrate the SHAP library in the inference pipeline to return the top contributing features (positive and negative) for the frontend dashboard.
+4. Plan Matching: Calculate cosine similarity between the user's generated vector and the 47 plan vectors using `pgvector`.
+
+## Phase 4: Full Stack Integration
+1. Connect the frontend API client to the backend FastAPI endpoints.
+2. Replace the frontend simulation timeouts in `Processing.tsx` with actual asynchronous API calls.
+3. Bind the backend SHAP values and recommended plans to the `Recommendations.tsx` UI.
+
+## Phase 5: Polish and Deployment
+1. Write unit tests (Pytest for backend, Vitest for frontend).
+2. Set up Docker & BullMQ for handling heavy asynchronous tasks (like NLP extraction) outside the main API thread.
+3. Deploy frontend (e.g., Vercel/Netlify) and backend (e.g., AWS/Render/Railway).
