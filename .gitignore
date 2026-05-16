@@ -53,6 +53,117 @@ INSURO_ML/reports/*.html
 INSURO_ML/reports/*.pdf
 
 # --- Security & Credentials ---
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ── Environment & Secrets ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# ── ML Model Weights & Artefacts ─────────────────────────────────────────────
+extraction/models/
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# HuggingFace cache (can be large)
+.cache/
+~/.cache/huggingface/
+
+# ── Uploaded / Temp Files ────────────────────────────────────────────────────
+extraction/sample_docs/*.pdf
+extraction/sample_docs/*.png
+extraction/sample_docs/*.jpg
+extraction/sample_docs/*.jpeg
+extraction/sample_docs/*.tiff
+tmp/
+/tmp/
+
+# ── Test & Coverage ──────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.coveragerc
+
+# ── Node.js (for when frontend/backend are added) ────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+dist/
+.next/
+.nuxt/
+.output/
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+*.log
+
+# ── IDE & OS ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.class
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Environments
 .env
 .env.local
 .env.development.local
@@ -91,3 +202,12 @@ fairness_audit_report.md
 actuarial_validation_report.md
 launch_readiness_report.md
 ml_model_report.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env/
