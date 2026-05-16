@@ -1,9 +1,16 @@
-# Insuro
+# Insuro (v1.1.0)
 ### AI-Powered Health Insurance Recommendation Platform
 
-Insuro is a full-stack AI-powered insurance recommendation system that helps users discover personalized health insurance plans using machine learning, NLP-driven medical document analysis, and explainable AI.
+Insuro is a production-hardened, full-stack AI system that classifies health risk and recommends personalized insurance plans. Version 1.1.0 introduces population-scale training and enhanced security.
 
-Instead of relying on simple premium-based filtering, Insuro evaluates user health profiles, financial constraints, and extracted clinical indicators to recommend the most suitable plans with transparent reasoning.
+---
+
+## 🚀 v1.1.0 Production Readiness Update
+- **Real-World Training**: Trained on 253,680 records from the **CDC Diabetes Health Indicators** dataset.
+- **Top Performance**: XGBoost classifier achieved **F1-Macro: 0.9936**.
+- **Security**: Full **JWT HS256** implementation for sensitive ML endpoints.
+- **Monitoring**: PSI-based drift detection enabled at `/monitor`.
+- **Professional Audit**: View the [Technical Evaluation Report (DOCX)](./Insuro_Technical_Evaluation_Report.docx).
 
 ---
 

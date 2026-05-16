@@ -1,0 +1,93 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- Virtual Environments ---
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# --- ML Artifacts & Data (Production Models & Raw Data) ---
+# Exclude large binary models and datasets
+*.pkl
+*.joblib
+*.h5
+*.pb
+*.onnx
+*.model
+*.csv
+*.xlsx
+*.parquet
+INSURO_ML/cdc_data_raw.csv
+INSURO_ML/dataset_real_hybrid.csv
+INSURO_ML/dataset_survival.csv
+INSURO_ML/dataset.csv
+
+# Exclude generated plots and reports
+*.png
+*.jpg
+*.jpeg
+INSURO_ML/models/*.png
+INSURO_ML/reports/*.html
+INSURO_ML/reports/*.pdf
+
+# --- Security & Credentials ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.enc
+secure_storage/
+INSURO_ML/api/secure_storage/
+
+# --- IDE & OS ---
+.vscode/
+.idea/
+.project
+.pydevproject
+.settings/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Node / Frontend ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Temp & Scratch ---
+scratch/
+INSURO_ML/scratch/
+.temp/
+*.tmp
+model_test_report.json
+final_technical_evaluation_report.md
+comprehensive_model_report.md
+fairness_audit_report.md
+actuarial_validation_report.md
+launch_readiness_report.md
+ml_model_report.md

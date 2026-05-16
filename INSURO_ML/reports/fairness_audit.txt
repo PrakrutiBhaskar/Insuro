@@ -1,0 +1,20 @@
+InsuReady Fairness Audit Report
+===============================
+
+High-Risk Gender Parity Diff: 0.0288
+High-Risk Gender Eq Odds Diff: 0.0028
+
+Metrics by Gender:
+        accuracy  selection_rate
+gender                          
+0       0.984145        0.460767
+1       0.983063        0.489616
+
+Metrics by Income:
+             accuracy  selection_rate
+income_band                          
+1            0.981653        0.440832
+2            0.982942        0.446660
+3            0.981868        0.476991
+4            0.984157        0.480606
+5            0.983910        0.475696
