@@ -10,7 +10,7 @@ import pandas as pd
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "api"))
 from scorer import PlanScorer
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "models", "insuready_model.pkl")
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "models", "insuro_model.pkl")
 
 # --- Encoding Helpers (from app.py) ---
 FEATURE_ORDER = [

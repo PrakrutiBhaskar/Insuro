@@ -1,5 +1,5 @@
 """
-InsuReady — Dataset Builder
+INSURO — Dataset Builder
 Unified 18-feature health risk dataset.
 Distributions sourced from:
   - PIMA Indians Diabetes (Kaggle)

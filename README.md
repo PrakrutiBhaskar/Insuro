@@ -1,24 +1,36 @@
-# Insuro (v1.1.0)
-### AI-Powered Health Insurance Recommendation Platform
+# INSURO — AI-Driven Clinical Insurance Platform
 
-Insuro is a production-hardened, full-stack AI system that classifies health risk and recommends personalized insurance plans. Version 1.1.0 introduces population-scale training and enhanced security.
+Insuro is a production-grade insurance technology platform that utilizes a triple-model AI stack to provide hyper-personalized insurance recommendations based on clinical data.
+
+## 🚀 System Architecture
+
+Insuro is built on a containerized microservices architecture:
+
+- **Frontend**: React 18 + Vite + Framer Motion (Cyber-Clinical UX)
+- **Backend Gateway**: FastAPI + PostgreSQL (pgvector) + Redis
+- **ML Inference Service**: XGBoost + SHAP (Explainability) + DiCE (Counterfactuals)
+- **NLP Extraction Service**: Bio_ClinicalBERT (Medical NER)
+
+## 🛠️ Tech Stack
+
+- **AI/ML**: Python, Scikit-Learn, XGBoost, Lifelines, Transformers (HuggingFace)
+- **Database**: PostgreSQL with `pgvector` for semantic plan matching
+- **Frontend**: TypeScript, React, Zustand, Framer Motion, TailwindCSS (for layout)
+- **Security**: AES-256 at-rest encryption, JWT RBAC, Scoped CORS
+
+## 📖 Key Documentation
+
+- **[ML Research & Dataset Details](INSURO_ML/RESEARCH.md)**: Deep dive into the models, training data (UCI/Kaggle), and accuracy metrics.
+- **[Demo Script](DEMO_SCRIPT.md)**: Step-by-step guide for the 2-minute judging walkthrough.
+- **[Task List](insuro_task_list.md)**: Full project roadmap and status.
+
+## 🏁 Getting Started
+
+1. **Start Services**: `docker-compose up --build`
+2. **Seed Database**: `python seed_db.py`
+3. **Warm-up Models**: `python warmup.py` (Required for instant demo performance)
+4. **Access**: Open `http://localhost:5173`
 
 ---
-
-## 🚀 v1.1.0 Production Readiness Update
-- **Real-World Training**: Trained on 253,680 records from the **CDC Diabetes Health Indicators** dataset.
-- **Top Performance**: XGBoost classifier achieved **F1-Macro: 0.9936**.
-- **Security**: Full **JWT HS256** implementation for sensitive ML endpoints.
-- **Monitoring**: PSI-based drift detection enabled at `/monitor`.
-- **Professional Audit**: View the [Technical Evaluation Report (DOCX)](./Insuro_Technical_Evaluation_Report.docx).
-
-  # InsuReady Web App Design
-
-  This is a code bundle for InsuReady Web App Design. The original project is available at https://www.figma.com/design/cDpevKYRZ1R9R3U9IVUVoj/InsuReady-Web-App-Design.
-
-  ## Running the code
-
-  Run `npm i` to install the dependencies.
-
-  Run `npm run dev` to start the development server.
-  
+**Developed for**: PS04 Hackathon Demo
+**Status**: V1.4 Final (Production Hardened)

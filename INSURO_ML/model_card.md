@@ -1,4 +1,4 @@
-# Model Card: InsuReady Risk Classifier (v1.1.0)
+# Model Card: INSURO Risk Classifier (v1.1.0)
 
 ## 1. Model Details
 - **Organization**: Insuro Technical Team

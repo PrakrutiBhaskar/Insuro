@@ -1,6 +1,7 @@
 import { Outlet, useNavigate, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import { useAppStore } from "../../store";
+import { AnimatePresence, motion } from "motion/react";
 
 export function Layout() {
   const navigate = useNavigate();
@@ -52,19 +53,20 @@ export function Layout() {
               <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="34" y2="34"><stop stopColor="#00E5A0"/><stop offset="1" stopColor="#009960"/></linearGradient></defs>
             </svg>
           </div>
-          <span className="logo-text">InsuReady</span>
+          <span className="logo-text">INSURO</span>
         </div>
         <div className="nav-center">
-          <button className={`nav-link ${isHome ? "active" : ""}`} onClick={() => navigate("/")}>Home</button>
-          <button className={`nav-link ${isProfile ? "active" : ""}`} onClick={() => navigate("/intake")}>Profile</button>
-          <button className={`nav-link ${isDash ? "active" : ""}`} onClick={() => navigate("/reco")}>Dashboard</button>
+          <button className={`nav-link ${location.pathname === "/dashboard" ? "active" : ""}`} onClick={() => navigate("/dashboard")}>Dashboard</button>
+          <button className={`nav-link ${location.pathname === "/plans" ? "active" : ""}`} onClick={() => navigate("/plans")}>Plans</button>
+          <button className={`nav-link ${location.pathname === "/ai-assistant" ? "active" : ""}`} onClick={() => navigate("/ai-assistant")}>AI Assistant</button>
+          <button className={`nav-link ${location.pathname === "/profile" ? "active" : ""}`} onClick={() => navigate("/profile")}>Profile</button>
         </div>
         <div className="nav-right">
           {isAuthenticated ? (
             <>
               <div className="user-chip">
-                <div className="user-dot">{user?.name?.substring(0, 2).toUpperCase() || 'US'}</div>
-                <span>{user?.name || 'User'}</span>
+                <div className="user-dot">{(user?.name || 'User').substring(0, 2).toUpperCase()}</div>
+                <span>{user?.name || 'Member'}</span>
               </div>
               <button className="btn btn-ghost btn-sm" onClick={handleLogout}>Sign out</button>
             </>
@@ -74,7 +76,19 @@ export function Layout() {
         </div>
       </nav>
 
-      <Outlet />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+          className="flex flex-col flex-1"
+          style={{ paddingTop: '60px' }}
+        >
+          <Outlet />
+        </motion.div>
+      </AnimatePresence>
       
       <div className={`toast ${showToast ? 'show' : ''}`} id="toast">{toastMsg}</div>
     </>

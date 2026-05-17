@@ -1,5 +1,5 @@
 """
-InsuReady ML — Plan Suitability Scorer
+INSURO ML — Plan Suitability Scorer
 ---------------------------------------
 Combines hard eligibility filtering with cosine-similarity
 scoring against a user feature vector.
@@ -193,8 +193,54 @@ def _explain_plan(plan: dict, user_input: dict, scores: dict) -> str:
 
 class PlanScorer:
     def __init__(self, catalogue_path: str = CATALOGUE_PATH):
+        self._plans = []
+        self._load_plans(catalogue_path)
+
+    def _load_plans(self, catalogue_path):
+        # Try loading from DB first
+        db_url = os.getenv("DATABASE_URL")
+        if db_url:
+            try:
+                if db_url.startswith("sqlite"):
+                    import sqlite3
+                    conn = sqlite3.connect(db_url.replace("sqlite:///", ""))
+                    conn.row_factory = lambda cursor, row: dict(zip([col[0] for col in cursor.description], row))
+                    cur = conn.cursor()
+                    cur.execute("SELECT * FROM insurance_plans")
+                    db_plans = cur.fetchall()
+                    for p in db_plans:
+                        p["monthly_premium_inr"] = int(p["price"])
+                        p["annual_premium_inr"] = int(p["price"] * 12)
+                        p["sum_insured_inr"] = int(p["sum_insured"])
+                        p["tag_vector"] = json.loads(p["plan_vector"])
+                        p["features"] = json.loads(p["features"])
+                        p["suitable_for"] = json.loads(p["suitable_for"])
+                    self._plans = db_plans
+                    print(f"Loaded {len(self._plans)} plans from SQLite.")
+                    conn.close()
+                    return
+                else:
+                    # Postgres path... (omitted for brevity but kept in original)
+                    import psycopg2
+                    from psycopg2.extras import RealDictCursor
+                    conn = psycopg2.connect(db_url)
+                    cur = conn.cursor(cursor_factory=RealDictCursor)
+                    cur.execute("SELECT * FROM insurance_plans")
+                    db_plans = cur.fetchall()
+                    for p in db_plans:
+                        p["monthly_premium_inr"] = int(p["price"])
+                        p["tag_vector"] = p["plan_vector"]
+                    self._plans = db_plans
+                    print(f"Loaded {len(self._plans)} plans from PostgreSQL.")
+                    conn.close()
+                    return
+            except Exception as e:
+                print(f"DB Load failed, falling back to JSON: {e}")
+
+        # Fallback to JSON
         with open(catalogue_path, "r") as f:
             self._plans = json.load(f)
+            print(f"Loaded {len(self._plans)} plans from local JSON.")
 
     def score(
         self,

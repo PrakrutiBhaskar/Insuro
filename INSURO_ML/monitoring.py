@@ -80,7 +80,7 @@ class ModelMonitor:
 
 if __name__ == "__main__":
     # Example usage
-    print("--- InsuReady Drift Monitoring Test ---")
+    print("--- INSURO Drift Monitoring Test ---")
     # Mock data
     train = np.random.normal(0, 1, 1000)
     infer = np.random.normal(0.2, 1.1, 100) # Slight drift

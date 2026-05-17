@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 # Configuration
 DATA_PATH = Path("INSURO_ML/dataset_real_hybrid.csv")
-MODEL_PATH = Path("INSURO_ML/models/insuready_model.pkl")
+MODEL_PATH = Path("INSURO_ML/models/insuro_model.pkl")
 
 def run_fairness_audit():
     print("--- Conducting Fairness and Bias Audit ---")
@@ -68,7 +68,7 @@ def run_fairness_audit():
     report_path = Path("INSURO_ML/reports/fairness_audit.txt")
     report_path.parent.mkdir(exist_ok=True)
     with open(report_path, "w") as f:
-        f.write("InsuReady Fairness Audit Report\n")
+        f.write("INSURO Fairness Audit Report\n")
         f.write("===============================\n\n")
         f.write(f"High-Risk Gender Parity Diff: {dp_diff:.4f}\n")
         f.write(f"High-Risk Gender Eq Odds Diff: {eo_diff:.4f}\n\n")

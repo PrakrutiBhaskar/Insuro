@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppStore } from "../../store";
 import { api } from "../../api/client";
+import { motion } from "motion/react";
 
 export function Login() {
   const [tab, setTab] = useState<"signin" | "signup">("signin");
@@ -13,33 +14,50 @@ export function Login() {
   const navigate = useNavigate();
   const login = useAppStore(state => state.login);
 
-  const doLogin = async () => {
+  const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const res = await api.auth.login(email || "demo@example.com", password || "demo");
-      login(res.user.email, res.user.name);
+      if (tab === "signin") {
+        const res = await api.auth.login(email || "demo@example.com", password || "demo");
+        login(res.user.email, res.user.name);
+      } else {
+        const res = await api.auth.register(name || "Arjun Sharma", email || "demo@example.com", password || "demo");
+        login(res.user.email, res.user.name);
+      }
       navigate("/intake");
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      window.dispatchEvent(new CustomEvent('show-toast', { detail: 'Login failed' }));
+      const msg = e.response?.data?.detail || (tab === "signin" ? 'Login failed' : 'Registration failed');
+      window.dispatchEvent(new CustomEvent('show-toast', { detail: msg }));
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="screen active" id="screen-login">
-      <div className="login-left">
+    <motion.div 
+      className="screen active" 
+      id="screen-login"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.div 
+        className="login-left"
+        initial={{ x: -30, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.5 }}
+      >
         <div className="hero-tag">
           <span className="live-dot"></span>
           Fidelity LEAP Hackathon 2026 · Problem #4
         </div>
         <h1 className="hero-h1">
           Insurance that<br/>
-          <span className="line2">understands you.</span>
+          <span className="line2">understands you</span>
         </h1>
         <p className="hero-sub">
-          InsuReady is the first AI-powered insurance platform built on a genuine ranking model — not a filtered database. Ingest health data, assess clinical risk, and deliver fully explainable, personalised coverage recommendations.
+          INSURO is the first AI-powered insurance platform built on a genuine ranking model — not a filtered database. Ingest health data, assess clinical risk, and deliver fully explainable, personalised coverage recommendations.
         </p>
 
         <div className="stats-row">
@@ -86,19 +104,24 @@ export function Login() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="login-right">
-        <div className="login-card">
+      <motion.div 
+        className="login-right"
+        initial={{ x: 30, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        <div className="login-card shadow-2xl bg-black/40 backdrop-blur-xl border border-white/10">
           <div className="card-logo">
             <svg className="card-logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="36" height="36" rx="9" fill="url(#cardLogoGrad)"/>
-              <path d="M18 6L9 11v13l9 6 9-6V11L18 6z" stroke="#020D1A" strokeWidth="1.5" fill="none"/>
-              <rect x="15.5" y="13.5" width="5" height="2" rx="1" fill="#020D1A"/>
-              <rect x="17.5" y="11.5" width="2" height="6" rx="1" fill="#020D1A"/>
-              <defs><linearGradient id="cardLogoGrad" x1="0" y1="0" x2="36" y2="36"><stop stopColor="#00E5A0"/><stop offset="1" stopColor="#009960"/></linearGradient></defs>
+              <path d="M18 6L9 11v13l9 6 9-6V11L18 6z" stroke="#fff" strokeWidth="1.5" fill="none"/>
+              <rect x="15.5" y="13.5" width="5" height="2" rx="1" fill="#fff"/>
+              <rect x="17.5" y="11.5" width="2" height="6" rx="1" fill="#fff"/>
+              <defs><linearGradient id="cardLogoGrad" x1="0" y1="0" x2="36" y2="36"><stop stopColor="#1A54D4"/><stop offset="1" stopColor="#2E6FFF"/></linearGradient></defs>
             </svg>
-            <span className="card-logo-text">InsuReady</span>
+            <span className="card-logo-text">INSURO</span>
           </div>
           <h2 className="card-title">Welcome back</h2>
           <p className="card-sub">Sign in to your coverage intelligence dashboard</p>
@@ -112,7 +135,7 @@ export function Login() {
             <div id="signin-form">
               <div className="fg"><label className="fl">Email address</label><input className="fi" type="email" placeholder="arjun@example.com" value={email} onChange={e => setEmail(e.target.value)}/></div>
               <div className="fg"><label className="fl">Password</label><input className="fi" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)}/></div>
-              <button className="btn btn-em btn-full" style={{ marginBottom: '16px' }} onClick={doLogin} disabled={isLoading}>
+              <button className="btn btn-em btn-full" style={{ marginBottom: '16px' }} onClick={handleSubmit} disabled={isLoading}>
                 {isLoading ? "Authenticating..." : "Continue →"}
               </button>
               <div className="divider">or</div>
@@ -125,14 +148,14 @@ export function Login() {
               <div className="fg"><label className="fl">Full name</label><input className="fi" type="text" placeholder="Arjun Sharma" value={name} onChange={e => setName(e.target.value)}/></div>
               <div className="fg"><label className="fl">Email address</label><input className="fi" type="email" placeholder="arjun@example.com" value={email} onChange={e => setEmail(e.target.value)}/></div>
               <div className="fg"><label className="fl">Password</label><input className="fi" type="password" placeholder="Min 8 chars, mixed case + digit" value={password} onChange={e => setPassword(e.target.value)}/></div>
-              <button className="btn btn-em btn-full" style={{ marginBottom: '16px' }} onClick={doLogin} disabled={isLoading}>
+              <button className="btn btn-em btn-full" style={{ marginBottom: '16px' }} onClick={handleSubmit} disabled={isLoading}>
                 {isLoading ? "Creating account..." : "Create Account →"}
               </button>
               <div className="demo-tip">🎬 <strong>Demo mode</strong> — click Create Account to launch</div>
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

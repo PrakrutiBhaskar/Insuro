@@ -1,5 +1,5 @@
 """
-InsuReady — ML Training Pipeline (v1.1.0 Hardened)
+INSURO — ML Training Pipeline (v1.1.0 Hardened)
 Stages:
   1. Load & preprocess dataset (with MissingIndicator)
   2. Optuna HPO search (with versioned parameter logging)
@@ -268,7 +268,7 @@ def run_pipeline():
         "metrics": metrics,
         "version": "1.1.0"
     }
-    joblib.dump(bundle, MODEL_DIR / "insuready_model.pkl")
+    joblib.dump(bundle, MODEL_DIR / "insuro_model.pkl")
     
     with open(MODEL_DIR / "model_meta.json", "w") as f:
         json.dump(metrics, f, indent=4)

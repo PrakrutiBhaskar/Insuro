@@ -41,13 +41,17 @@ interface AppState {
   history: HealthHistory | null;
   prefs: CoveragePrefs | null;
   intakeStep: number;
+  modelResult: any | null;
   
-  login: (email: string, name: string) => void;
+  token: string | null;
+  
+  login: (email: string, name: string, token: string) => void;
   logout: () => void;
   setProfile: (data: UserProfile) => void;
   setVitals: (data: ClinicalVitals) => void;
   setHistory: (data: HealthHistory) => void;
   setPrefs: (data: CoveragePrefs) => void;
+  setModelResult: (result: any) => void;
   setIntakeStep: (step: number) => void;
   resetIntake: () => void;
 }
@@ -57,26 +61,31 @@ export const useAppStore = create<AppState>()(
     (set) => ({
       isAuthenticated: false,
       user: null,
+      token: null,
       profile: null,
       vitals: null,
       history: null,
       prefs: null,
       intakeStep: 1,
+      modelResult: null,
 
-      login: (email, name) => set({ isAuthenticated: true, user: { email, name } }),
+      login: (email, name, token) => set({ isAuthenticated: true, user: { email, name }, token }),
       logout: () => set({ 
         isAuthenticated: false, 
         user: null, 
+        token: null,
         profile: null, 
         vitals: null, 
         history: null, 
         prefs: null, 
-        intakeStep: 1 
+        intakeStep: 1,
+        modelResult: null
       }),
       setProfile: (data) => set({ profile: data }),
       setVitals: (data) => set({ vitals: data }),
       setHistory: (data) => set({ history: data }),
       setPrefs: (data) => set({ prefs: data }),
+      setModelResult: (result) => set({ modelResult: result }),
       setIntakeStep: (step) => set({ intakeStep: step }),
       resetIntake: () => set({
         profile: null,
@@ -87,7 +96,7 @@ export const useAppStore = create<AppState>()(
       }),
     }),
     {
-      name: 'insuready-storage',
+      name: 'insuro-storage',
     }
   )
 );

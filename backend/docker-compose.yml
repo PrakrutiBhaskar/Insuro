@@ -3,9 +3,9 @@ services:
   db:
     image: ankane/pgvector:v0.5.1
     environment:
-      - POSTGRES_USER=insuready
+      - POSTGRES_USER=insuro
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=insuready_db
+      - POSTGRES_DB=insuro_db
     ports:
       - "5432:5432"
     volumes:

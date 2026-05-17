@@ -1,6 +1,6 @@
-# InsuReady — Clinical Document Extraction Service
+# INSURO — Clinical Document Extraction Service
 
-This is the NLP extraction microservice for the InsuReady platform. It accepts uploaded lab reports and prescriptions (PDF or image), extracts structured health fields using regex normalisation and a Bio_ClinicalBERT NER model, and returns a JSON payload that feeds directly into the ML risk assessment pipeline.
+This is the NLP extraction microservice for the INSURO platform. It accepts uploaded lab reports and prescriptions (PDF or image), extracts structured health fields using regex normalisation and a Bio_ClinicalBERT NER model, and returns a JSON payload that feeds directly into the ML risk assessment pipeline.
 
 ---
 

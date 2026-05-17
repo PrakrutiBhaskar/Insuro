@@ -1,4 +1,4 @@
-InsuReady Fairness Audit Report
+INSURO Fairness Audit Report
 ===============================
 
 High-Risk Gender Parity Diff: 0.0288

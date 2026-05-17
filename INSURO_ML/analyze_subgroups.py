@@ -6,7 +6,7 @@ from pathlib import Path
 import os
 
 # Configuration
-MODEL_PATH = Path("INSURO_ML/models/insuready_model.pkl")
+MODEL_PATH = Path("INSURO_ML/models/insuro_model.pkl")
 DATA_PATH = Path("INSURO_ML/dataset_real_hybrid.csv")
 
 def calculate_ece(y_true, y_prob, n_bins=10):
@@ -22,7 +22,7 @@ def calculate_ece(y_true, y_prob, n_bins=10):
     return float(ece)
 
 def analyze_subgroups():
-    print("--- InsuReady Subgroup Fairness Analysis ---")
+    print("--- INSURO Subgroup Fairness Analysis ---")
     
     if not MODEL_PATH.exists():
         print(f"Error: Model not found at {MODEL_PATH}")

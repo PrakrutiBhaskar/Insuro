@@ -1,4 +1,4 @@
-# InsuReady - Development Plan
+# INSURO - Development Plan
 
 ## Phase 1: Frontend Finalization (Current)
 1. Context Integration: Replace mock states in `Login.tsx`, `Intake.tsx`, etc., with global state management (Zustand or React Context) to manage the health profile data across steps.

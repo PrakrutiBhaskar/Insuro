@@ -1,4 +1,4 @@
-# InsuReady — Integration Guide
+# INSURO — Integration Guide
 
 This document describes what each team member has built and exactly what needs to happen for all four pieces to work together as a complete system.
 

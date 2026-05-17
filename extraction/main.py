@@ -41,7 +41,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="InsuReady — Clinical Document Extraction Service",
+    title="INSURO — Clinical Document Extraction Service",
     description="Extracts structured health fields from lab reports and prescriptions.",
     version="1.0.0",
 )
@@ -49,12 +49,14 @@ app = FastAPI(
 MAX_FILE_SIZE_BYTES = int(os.getenv("MAX_FILE_SIZE_MB", 10)) * 1024 * 1024
 
 SUPPORTED_MIME_TYPES = {
-    "application/pdf":  "pdf",
-    "image/jpeg":       "image",
-    "image/jpg":        "image",
-    "image/png":        "image",
-    "image/tiff":       "image",
-    "image/bmp":        "image",
+    "application/pdf":    "pdf",
+    "application/x-pdf":  "pdf",
+    "application/octet-stream": "pdf", # Fallback for unknown binaries
+    "image/jpeg":         "image",
+    "image/jpg":          "image",
+    "image/png":          "image",
+    "image/tiff":         "image",
+    "image/bmp":          "image",
 }
 
 
@@ -108,6 +110,14 @@ async def extract(file: UploadFile = File(...)):
     content_type = file.content_type or ""
     file_type = SUPPORTED_MIME_TYPES.get(content_type)
 
+    # Fallback: Check extension if MIME type is generic or unknown
+    if file_type is None:
+        ext = Path(file.filename or "").suffix.lower()
+        if ext == ".pdf":
+            file_type = "pdf"
+        elif ext in [".jpg", ".jpeg", ".png", ".tiff", ".bmp"]:
+            file_type = "image"
+
     if file_type is None:
         raise HTTPException(
             status_code=415,
@@ -155,8 +165,16 @@ async def extract(file: UploadFile = File(...)):
         # --- 5. Regex normalisation ---
         regex_fields = normalise(raw_text)
 
-        # --- 6. NER enrichment ---
-        ner_fields = extract_ner_fields(raw_text)
+        # --- 6. NER enrichment (Optional - Disabled for cold-start stability) ---
+        # try:
+        #     ner_fields = extract_ner_fields(raw_text)
+        # except Exception as ner_err:
+        #     logger.warning(f"NER enrichment failed: {ner_err}")
+        ner_fields = {
+            "ner_conditions": [],
+            "ner_medications": [],
+            "ner_confidence": 0.0
+        }
 
         # --- 7. Merge: NER conditions supplement regex conditions ---
         merged_conditions = list(

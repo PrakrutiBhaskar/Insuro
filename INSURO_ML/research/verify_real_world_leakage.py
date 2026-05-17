@@ -56,7 +56,7 @@ def verify():
     df_test['coverage_type_pref'] = 0
     
     # 4. Load Model and Predict
-    bundle = joblib.load("INSURO_ML/models/insuready_model.pkl")
+    bundle = joblib.load("INSURO_ML/models/insuro_model.pkl")
     model = bundle['model']
     preprocessor = bundle['preprocessor']
     le = bundle['label_encoder']

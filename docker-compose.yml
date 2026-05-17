@@ -1,6 +1,6 @@
 version: "3.9"
 
-# ── InsuReady — Local Development Stack ──────────────────────────────────────
+# ── INSURO — Local Development Stack ──────────────────────────────────────
 #
 # Services defined here:
 #   extraction  — Python FastAPI NLP extraction microservice (your service)
@@ -80,6 +80,60 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # ── Backend API Gateway ───────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: insuro_backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - insuro_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      extraction:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── ML Inference Service ──────────────────────────────────────────────────
+  ml:
+    build:
+      context: ./INSURO_ML
+      dockerfile: Dockerfile
+    container_name: insuro_ml
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./INSURO_ML/.env
+    volumes:
+      - ./INSURO_ML:/app
+    networks:
+      - insuro_net
+    restart: unless-stopped
+
+  # ── Frontend React App ────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: insuro_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - insuro_net
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
 
 # ── Volumes ───────────────────────────────────────────────────────────────────
 volumes:

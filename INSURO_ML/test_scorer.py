@@ -135,7 +135,7 @@ def test_get_plan():
 
 
 if __name__ == "__main__":
-    print("\n--- InsuReady Scorer Tests ---")
+    print("\n--- INSURO Scorer Tests ---")
     test_cosine_similarity()
     test_user_vector_shape()
     test_hard_filters_risk_mismatch()
